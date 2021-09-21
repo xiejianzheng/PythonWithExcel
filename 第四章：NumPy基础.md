@@ -70,6 +70,59 @@ Python和NumPy中不同数据类型之间的转换是自动进行的。
 如果你构造一个标量和一个NumPy阵列的和，NumPy将执行元素感应操作，这意味着你不必自己
 循环遍历元素。
 
+In[8]:  array2 + 1
+Out[8]: array([[2.,3.,4.],
+              [5.,6.,7.]])
 
+**标量**
+标量指基本的Python类型，像浮点、或字符串。这是为了将它们与具有多个元素（如列表和字典或
+一维和二维NumPy阵列）数据结构区分开来。
+
+当你使用两个阵列的时候，同样的原则同样适用。NumPy会进行元素级的操作。
+
+In [9]: array2 * array2
+Out[9]: array([[1., 4., 9.],
+               [16., 25., 36.]])
+
+如果你使用两个不同形状的阵列进行算术运算，如果可能，NumPy会自动将较小的阵列
+穿越大的阵列，以便他们的形状兼容。这就是被称为广播：
+
+In [10]: array2 * array1
+
+Out[10]: array([[10.,200.,3000.],
+                [40.,500.,6000.]])
+
+要执行矩阵乘法或点积，请是@运算符。
+In [11]: array2 @ array2.T # array2.T 是array2.transpose() 
+Out[11]: array([[14., 32.],
+                [32., 77.]])
+
+不要被我在本节中介绍的术语给吓倒了，如标量、矢量化、广播。
+你现在知道阵列会在元素级执行算术操作，但你如何才能对阵列中
+的每个元素应用函数呢？这就是泛函数的用处。
+
+### 泛函数（ufunc）
+
+泛函数会作用在NumPy阵列中的每一个元素上。例如，如果你在NumPy阵列上使用math模块上的
+Python的标准平方根函数，你将得到一个错误：
+In [12]: import math
+In [13]: math.sqrt(array2) # 报错
+
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-13-5c37e8f41094> in <module>
+----> 1 math.sqrt(array2)  # This will raise en Error
+TypeError: only size-1 arrays can be converted to Python scalars
+
+当然，你能使用一个嵌套的循环来获取每一个元素，然后根据结果再次构建NumPy阵列。
+
+In [14]: np.array([[math.sqrt(i) for i in row] for row in array2])
+
+这在NumPy没有提供ufunc泛函数和阵列足够小的情况下，是起作用的。然而，如果NumPy
+有一个泛函数，使用它，因为在操作大阵列时会更快，除了更容易键入和键入之外：
+
+In [15]: np.sqrt(array2)
+
+一些NumPy的泛函数，像sum，
 
 
